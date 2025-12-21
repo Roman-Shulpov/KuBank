@@ -6,7 +6,7 @@
 <title>Страница</title>
 <link rel="stylesheet" href="style.css">
 <style>
-/* === Общие стили страницы === */
+/* === Общие стили === */
 body {margin:0; background:#161616; color:#fff; font-family: Arial, sans-serif;}
 header{display:flex; align-items:center; padding:16px; background:#1a1a1a; position:sticky; top:0;}
 .close{background:none; border:none; color:#fff; font-size:16px; cursor:pointer;}
@@ -71,19 +71,19 @@ header{display:flex; align-items:center; padding:16px; background:#1a1a1a; posit
   </div>
 </div>
 
-<!-- === Основная страница === -->
 <header>
   <button class="close" id="editBtn">✕</button>
 </header>
 
-<div style="margin:8px; padding-left:8px; padding-top:8px; width:50px;">
+<!-- === Основная страница === -->
+<div style="position:relative; margin:8px; padding-left:8px; padding-top:8px; width:50px;">
   <img id="recipientAvatar" src="https://cdnn21.img.ria.ru/images/07e8/02/0f/1927608429_0:0:640:640_1920x0_80_0_0_ae1300a0f202fd1faf907e77f424e55b.jpg" style="width:150%; border-radius:30%;">
 </div>
 
 <div style="margin:9px; padding-left:8px; border-radius:8px;">
-  <p id="amountDisplay" style="color:#fff; font-size:25px; font-weight:bold; margin:8px 0; font-family:'Times New Roman';">-45 ₽</p>
+  <p id="amountDisplay" style="color:#fff; font-size:25px; font-weight:normal; margin:8px 0; font-family:Arial, sans-serif;">-45 ₽</p>
   <p id="recipientNameDisplay" style="color:#fff; font-size:14px; margin:8px 0;">Марина У.</p>
-  <p style="color:#ccc; font-size:14px; margin:8px 0;">21 декабря, 19:42</p>
+  <p style="color:#ccc; font-size:14px; margin:8px 0;" id="transferDate">21 декабря, 19:42</p>
   <p style="color:#ccc; font-size:14px; margin:8px 0;">Операция выполнена</p>
 </div>
 
@@ -177,6 +177,12 @@ const bankIcons = {
   vtb:'vtb.png'
 };
 
+function updateTransferDate() {
+  const now = new Date();
+  const options = { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
+  document.getElementById('transferDate').textContent = now.toLocaleString('ru-RU', options);
+}
+
 document.getElementById('registrationForm').addEventListener('submit', function(e){
   e.preventDefault();
   const name = document.getElementById('recipientName').value;
@@ -189,17 +195,22 @@ document.getElementById('registrationForm').addEventListener('submit', function(
   document.getElementById('amountDisplay').textContent = `-${amount} ₽`;
   document.getElementById('amountInAnalytics').textContent = `${amount} ₽`;
   document.getElementById('paymentDetails').textContent = `Перевод в ${document.getElementById('bank').selectedOptions[0].text} по номеру телефона ${phone}`;
+  document.getElementById('paymentMessage').textContent = `Перевод денежных средств`;
 
-  document.getElementById('recipientAvatar').src = `images/${bankIcons[bank]}`; // <-- Меняем аватар на логотип банка
-  document.getElementById('bankIcon').src = 'images/perevod.png'; // <-- Лого "Переводы" остаётся
+  // Меняем avatar на логотип банка
+  document.getElementById('recipientAvatar').src = `images/${bankIcons[bank]}`;
+  // Лого перевода остаётся
+  document.getElementById('bankIcon').src = 'images/perevod.png';
 
+  updateTransferDate();
   document.getElementById('registrationScreen').style.display = 'none';
 });
 
-// Крестик для редактирования
+// Крестик возвращает форму
 document.getElementById('editBtn').addEventListener('click', function(){
   document.getElementById('registrationScreen').style.display = 'flex';
 });
 </script>
+
 </body>
 </html>
