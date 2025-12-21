@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Страница</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* === Общие стили страницы === */
+body {margin:0; background:#161616; color:#fff; font-family: Arial, sans-serif;}
+header{display:flex; align-items:center; padding:16px; background:#1a1a1a; position:sticky; top:0;}
+.close{background:none; border:none; color:#fff; font-size:16px; cursor:pointer;}
+.analytics-card{margin:16px 8px; padding:16px; border-radius:8px; color:#fff; font-family: Arial, sans-serif;}
+.analytics-card h3{font-size:16px; font-weight:700; margin:0 0 12px 0;}
+.analytics-item{display:flex; align-items:center; padding:10px 0;}
+.analytics-item .icon{width:40px; height:40px; border-radius:8px; background:#0bb; display:flex; align-items:center; justify-content:center; margin-right:12px; flex-shrink:0;}
+.analytics-item .icon img{width:100%; height:100%; border-radius:20%; object-fit:cover;}
+.analytics-item .title{font-size:14px; color:#fff; flex:1;}
+.analytics-item .amount{color:#ccc; font-size:14px; margin:0 8px; white-space:nowrap;}
+.analytics-item .chev{background:none; border:none; color:#888; font-size:18px; cursor:pointer; padding:4px;}
+.add-row{display:flex; align-items:center; gap:8px; padding-top:12px;}
+.add-btn{width:40px; height:40px; border-radius:30%; background:#242424; color:#fff; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+.settings{padding-top:12px; margin-top:8px;}
+.settings .row{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;}
+.settings .label{color:#fff; font-size:14px; flex:1;}
+.toggle{position:relative; width:46px; height:26px; background:#333; border-radius:15px; cursor:pointer; flex-shrink:0;}
+.toggle input{display:none;}
+.toggle .knob{position:absolute; top:3px; left:3px; width:20px; height:20px; background:#fff; border-radius:50%; transition: transform .18s ease;}
+.toggle input:checked + .knob{transform:translateX(20px); background:#4cd964;}
+.muted{color:#bbb; font-size:13px;}
+
+/* === Форма начальной регистрации === */
+#registrationScreen{
+  position:fixed; top:0; left:0; width:100%; height:100%; background:#161616;
+  display:flex; justify-content:center; align-items:center; z-index:1000;
+}
+.form-container{
+  width:90%; max-width:400px; background:#1a1a1a; padding:24px; border-radius:12px; box-sizing:border-box;
+}
+.form-container h2{color:#fff; text-align:center; margin-bottom:16px;}
+.form-container input, .form-container select{
+  width:100%; padding:10px; border-radius:8px; border:none; background:#242424; color:#fff; font-size:14px; margin-bottom:16px;
+}
+.form-container button{width:100%; padding:12px; border-radius:8px; border:none; background:#0bb; color:#fff; font-size:16px; cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- === Начальная форма === -->
+<div id="registrationScreen">
+  <div class="form-container">
+    <h2>Введите данные перевода</h2>
+    <form id="registrationForm">
+      <input type="text" id="recipientName" placeholder="ФИО получателя" required>
+      <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required>
+      <input type="number" id="amount" placeholder="Сумма перевода" required>
+      <select id="bank" required>
+        <option value="">-- Выберите банк --</option>
+        <option value="alfa">Альфа Банк</option>
+        <option value="akb">АК Барс</option>
+        <option value="gazprom">Газпромбанк</option>
+        <option value="ozon">Озон Банк</option>
+        <option value="pochta">Почта Банк</option>
+        <option value="rfz">Райффайзенбанк</option>
+        <option value="sber">Сбербанк</option>
+        <option value="tbank">Т-Банк</option>
+        <option value="vtb">ВТБ</option>
+      </select>
+      <button type="submit">Продолжить</button>
+    </form>
+  </div>
+</div>
+
+<!-- === Основная страница === -->
+<header>
+  <button class="close" id="editBtn">✕</button>
+</header>
+
+<div style="margin:8px; padding-left:8px; padding-top:8px; width:50px;">
+  <img id="recipientAvatar" src="https://cdnn21.img.ria.ru/images/07e8/02/0f/1927608429_0:0:640:640_1920x0_80_0_0_ae1300a0f202fd1faf907e77f424e55b.jpg" style="width:150%; border-radius:30%;">
+</div>
+
+<div style="margin:9px; padding-left:8px; border-radius:8px;">
+  <p id="amountDisplay" style="color:#fff; font-size:25px; font-weight:bold; margin:8px 0; font-family:'Times New Roman';">-45 ₽</p>
+  <p id="recipientNameDisplay" style="color:#fff; font-size:14px; margin:8px 0;">Марина У.</p>
+  <p style="color:#ccc; font-size:14px; margin:8px 0;">21 декабря, 19:42</p>
+  <p style="color:#ccc; font-size:14px; margin:8px 0;">Операция выполнена</p>
+</div>
+
+<div style="margin:16px 0; padding:0 8px;">
+  <hr style="border:none; border-top:1px solid #333; margin:8px 0;">
+  <div style="display:flex; justify-content:space-around; gap:4px; padding:8px 8px;">
+    <div style="text-align:center;">
+      <button style="width:50px; height:50px; border-radius:50%; background-image:url(images/shablon.png); background-size:cover; background-position:center; border:none; cursor:pointer;"></button>
+      <p style="color:#fff; font-size:12px; margin-top:4px;">Шаблон</p>
+    </div>
+    <div style="text-align:center;">
+      <button style="width:50px; height:50px; border-radius:50%; background-image:url(images/autopay.png); background-size:cover; background-position:center; border:none; cursor:pointer;"></button>
+      <p style="color:#fff; font-size:12px; margin-top:4px;">Автоплатёж</p>
+    </div>
+    <div style="text-align:center;">
+      <button style="width:50px; height:50px; border-radius:50%; background-image:url(images/kvitanshion.png); background-size:cover; background-position:center; border:none; cursor:pointer;"></button>
+      <p style="color:#fff; font-size:12px; margin-top:4px;">Квитанция</p>
+    </div>
+    <div style="text-align:center;">
+      <button style="width:50px; height:50px; border-radius:50%; background-image:url(images/repeat.png); background-size:cover; background-position:center; border:none; cursor:pointer;"></button>
+      <p style="color:#fff; font-size:12px; margin-top:4px;">Повторить</p>
+    </div>
+    <div style="text-align:center;">
+      <button style="width:50px; height:50px; border-radius:50%; background-image:url(images/cut.png); background-size:cover; background-position:center; border:none; cursor:pointer;"></button>
+      <p style="color:#fff; font-size:12px; margin-top:4px;">Разделить<br>чек</p>
+    </div>
+  </div>
+  <hr style="border:none; border-top:1px solid #333; margin:4px 0;">
+</div>
+
+<div class="analytics-card">
+  <h3>Финансовая аналитика</h3>
+  <div class="analytics-item">
+    <div class="icon"><img id="bankIcon" src="images/perevod.png"></div>
+    <div class="title">Переводы</div>
+    <div class="amount" id="amountInAnalytics">45 ₽</div>
+    <button class="chev">›</button>
+  </div>
+  <div class="add-row">
+    <div class="add-btn" style="background-image:url(images/addcateory.png); background-size:cover; background-position:center;"></div>
+    <div style="color:#fff; font-size:14px;">Добавить категорию</div>
+  </div>
+  <div class="settings">
+    <div class="row">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label for="analytics_check" class="label">Учитывать в аналитике</label>
+      </div>
+      <label class="toggle">
+        <input type="checkbox">
+        <span class="knob"></span>
+      </label>
+    </div>
+    <div class="row" style="align-items:flex-start;">
+      <div style="flex:1;">
+        <div class="muted">Отображение операции в разделе расходов и доходов</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin:8px 8px; padding-left:16px; border-radius:8px;">
+  <h3 style="font-size:16px; font-weight:700; margin:0 0 12px 0; color:#fff;">Детали операции</h3>
+  <div style="margin-bottom:16px;">
+    <p style="color:#888; font-size:12px; margin:0 0 4px 0;">Счёт списания</p>
+    <p style="color:#fff; font-size:14px; margin:0;">MainAccount ··4265</p>
+  </div>
+  <div style="margin-bottom:16px;">
+    <p style="color:#888; font-size:12px; margin:0 0 4px 0;">Детали платежа</p>
+    <p style="color:#fff; font-size:14px; margin:0;" id="paymentDetails">Перевод в Сбербанк по номеру телефона +7 996 951-76-71</p>
+  </div>
+  <div style="margin-bottom:16px;">
+    <p style="color:#888; font-size:12px; margin:0 0 4px 0;">Получатель</p>
+    <p style="color:#fff; font-size:14px; margin:0;" id="paymentRecipient">Андрей Михайлович К.</p>
+  </div>
+  <div>
+    <p style="color:#888; font-size:12px; margin:0 0 4px 0;">Сообщение получателю</p>
+    <p style="color:#fff; font-size:14px; margin:0;" id="paymentMessage">Перевод денежных средств</p>
+  </div>
+</div>
+
+<script>
+const bankIcons = {
+  alfa:'alfa.png',
+  akb:'akb.png',
+  gazprom:'gazprom.png',
+  ozon:'ozon.png',
+  pochta:'pochta.png',
+  rfz:'rfz.png',
+  sber:'sber.png',
+  tbank:'tbank.png',
+  vtb:'vtb.png'
+};
+
+document.getElementById('registrationForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('recipientName').value;
+  const phone = document.getElementById('phone').value;
+  const amount = document.getElementById('amount').value;
+  const bank = document.getElementById('bank').value;
+
+  document.getElementById('recipientNameDisplay').textContent = name;
+  document.getElementById('paymentRecipient').textContent = name;
+  document.getElementById('amountDisplay').textContent = `-${amount} ₽`;
+  document.getElementById('amountInAnalytics').textContent = `${amount} ₽`;
+  document.getElementById('paymentDetails').textContent = `Перевод в ${document.getElementById('bank').selectedOptions[0].text} по номеру телефона ${phone}`;
+
+  document.getElementById('recipientAvatar').src = `images/${bankIcons[bank]}`; // <-- Меняем аватар на логотип банка
+  document.getElementById('bankIcon').src = 'images/perevod.png'; // <-- Лого "Переводы" остаётся
+
+  document.getElementById('registrationScreen').style.display = 'none';
+});
+
+// Крестик для редактирования
+document.getElementById('editBtn').addEventListener('click', function(){
+  document.getElementById('registrationScreen').style.display = 'flex';
+});
+</script>
+</body>
+</html>
